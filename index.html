@@ -1,0 +1,61 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>YKAE</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+        }
+
+        canvas#webgl {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="file" id="file-input" style="display: none;" />
+    <canvas id="webgl"></canvas>
+    <script type="text/javascript" src="hello.js"></script>
+</body>
+<script>
+    function readSingleFile(e) {
+        var file = e.target.files[0];
+        if (!file) {
+            return;
+        }
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var contents = e.target.result;
+            window.webFile.callback(atob(contents));
+        };
+        reader.readAsText(file);
+    }
+
+    window.webFile = {
+        SelectFile: function () {
+            document.getElementById('file-input').click();
+        },
+        AddFileSelectedListener: function (callback) {
+            window.webFile.callback = callback;
+        },
+        SaveFile: function (content) {
+            const link = document.createElement("a");
+            const file = new Blob([btoa(content)], { type: 'text/plain' });
+            link.href = URL.createObjectURL(file);
+            link.download = "maroom.ykae";
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+    }
+
+    document.getElementById('file-input')
+        .addEventListener('change', readSingleFile, false);
+</script>
+
+</html>

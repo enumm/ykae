@@ -1,0 +1,7 @@
+-cp src
+-D heaps_enable_serialize
+-lib heaps
+-lib hxbit
+-lib uuid
+-js hello.js
+-main Main
